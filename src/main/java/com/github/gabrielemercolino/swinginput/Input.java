@@ -1,0 +1,45 @@
+package com.github.gabrielemercolino.swinginput;
+
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.util.HashMap;
+import java.util.Map;
+
+public final class Input {
+	public static final Keyboard keyboardListener = new Keyboard();
+
+	public static void sync() {
+		Keyboard.sync();
+	}
+
+	public static final class Keyboard extends KeyAdapter {
+		private static final Map<Integer, Boolean> previous = new HashMap<>();
+		private static final Map<Integer, Boolean> current = new HashMap<>();
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			current.put(e.getKeyCode(), true);
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			current.put(e.getKeyCode(), false);
+		}
+
+		private static void sync() {
+			previous.putAll(current);
+		}
+
+		public static boolean isPressed(int keyCode) {
+			return current.getOrDefault(keyCode, false);
+		}
+
+		public static boolean wasJustPressed(int keyCode) {
+			return !previous.getOrDefault(keyCode, false) && isPressed(keyCode);
+		}
+
+		public static boolean wasJustReleased(int keyCode) {
+			return previous.getOrDefault(keyCode, false) && !isPressed(keyCode);
+		}
+	}
+}
