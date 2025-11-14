@@ -15,7 +15,7 @@
         };
       in {
         devShells.default = pkgs.mkShell {
-          buildInputs = with pkgs; [jdk21];
+          buildInputs = with pkgs; [jdk25];
           shellHook = ''
             clear
             echo "SwingInput dev env activated" | ${pkgs.lolcat}/bin/lolcat
