@@ -4,9 +4,11 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 public final class Input {
-	public static final Keyboard keyboardListener = new Keyboard();
+	@SuppressWarnings("preview")
+	public static final Supplier<Keyboard> keyboardListener = StableValue.supplier(Keyboard::new);
 
 	public static void sync() {
 		Keyboard.sync();
