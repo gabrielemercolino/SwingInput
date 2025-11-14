@@ -13,8 +13,16 @@ repositories {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
+}
+
+tasks.withType<JavaCompile> {
+    options.compilerArgs.addAll(listOf("--enable-preview", "--release", "25"))
+}
+
+tasks.withType<Test> {
+    jvmArgs("--enable-preview")
 }
 
 dependencies {
