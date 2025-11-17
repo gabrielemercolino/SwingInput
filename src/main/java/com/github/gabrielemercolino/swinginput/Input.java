@@ -15,8 +15,8 @@ public final class Input {
 	}
 
 	public static final class Keyboard extends KeyAdapter {
-		private static final Map<Integer, Boolean> previous = new HashMap<>();
-		private static final Map<Integer, Boolean> current = new HashMap<>();
+		private static final Map<Integer, Boolean> previous = new ConcurrentHashMap<>();
+		private static final Map<Integer, Boolean> current = new ConcurrentHashMap<>();
 
 		@Override
 		public void keyPressed(KeyEvent e) {
