@@ -2,16 +2,27 @@ package com.github.gabrielemercolino.swinginput;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.HashMap;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Map;
-import java.util.function.Supplier;
+import java.util.concurrent.ConcurrentHashMap;
 
+@SuppressWarnings("preview")
 public final class Input {
-	@SuppressWarnings("preview")
-	public static final Supplier<Keyboard> keyboardListener = StableValue.supplier(Keyboard::new);
+	private static final StableValue<Keyboard> keyboardListener = StableValue.of();
+	private static final StableValue<Mouse> mouseListener = StableValue.of();
+
+	public static Keyboard keyboardListener() {
+		return keyboardListener.orElseSet(Keyboard::new);
+	}
+
+	public static Mouse mouseListener() {
+		return mouseListener.orElseSet(Mouse::new);
+	}
 
 	public static void sync() {
-		Keyboard.sync();
+		if (keyboardListener.isSet()) Keyboard.sync();
+		if (mouseListener.isSet()) Mouse.sync();
 	}
 
 	public static final class Keyboard extends KeyAdapter {
