@@ -1,22 +1,37 @@
 package com.github.gabrielemercolino.swinginput;
 
 import com.github.gabrielemercolino.swinginput.Input.Keyboard;
+import com.github.gabrielemercolino.swinginput.Input.Mouse;
 import org.junit.jupiter.api.Test;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 class InputTest {
 	@Test
 	void keyboardInput() {
 		JFrame frame = generateTestWindow(testName());
+		frame.addKeyListener(Input.keyboardListener());
 		frame.setVisible(true);
 
 		while (frame.isVisible()) {
-			if (Keyboard.wasJustPressed(KeyEvent.VK_SPACE)) System.out.println("Just pressed space");
-			if (Keyboard.wasJustReleased(KeyEvent.VK_SPACE)) System.out.println("Just released space");
+			if (Keyboard.wasJustPressed(KeyEvent.VK_SPACE)) IO.println("Just pressed space");
+			if (Keyboard.wasJustReleased(KeyEvent.VK_SPACE)) IO.println("Just released space");
+			Input.sync();
+		}
+	}
+
+	@Test
+	void mouseInput() {
+		JFrame frame = generateTestWindow(testName());
+		frame.addMouseListener(Input.mouseListener());
+		frame.setVisible(true);
+
+		while (frame.isVisible()) {
+			if (Mouse.wasJustPressed(MouseEvent.BUTTON1)) IO.println("Just pressed left mouse");
 			Input.sync();
 		}
 	}
@@ -29,7 +44,6 @@ class InputTest {
 
 	private static JFrame generateTestWindow(final String testName) {
 		JFrame frame = new JFrame(testName);
-		frame.addKeyListener(Input.keyboardListener);
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(1280, 720));
 		panel.setMinimumSize(new Dimension(1280, 720));
