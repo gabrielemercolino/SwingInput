@@ -6,34 +6,43 @@ import org.junit.jupiter.api.Test;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+@SuppressWarnings("BusyWait")
 class InputTest {
 	@Test
-	void keyboardInput() {
+	void keyboardInput() throws InterruptedException {
 		JFrame frame = generateTestWindow(testName());
 		frame.addKeyListener(Input.keyboardListener());
 		frame.setVisible(true);
 
-		while (frame.isVisible()) {
+		Timer timer = new Timer(16, _ -> {
 			if (Keyboard.wasJustPressed(KeyEvent.VK_SPACE)) IO.println("Just pressed space");
 			if (Keyboard.wasJustReleased(KeyEvent.VK_SPACE)) IO.println("Just released space");
 			Input.sync();
-		}
+		});
+		timer.start();
+
+		while (frame.isVisible()) Thread.sleep(100);
 	}
 
 	@Test
-	void mouseInput() {
+	void mouseInput() throws InterruptedException {
 		JFrame frame = generateTestWindow(testName());
 		frame.addMouseListener(Input.mouseListener());
 		frame.setVisible(true);
 
-		while (frame.isVisible()) {
+		Timer timer = new Timer(16, _ -> {
 			if (Mouse.wasJustPressed(MouseEvent.BUTTON1)) IO.println("Just pressed left mouse");
+			if (Mouse.wasJustReleased(MouseEvent.BUTTON1)) IO.println("Just released left mouse");
 			Input.sync();
-		}
+		});
+		timer.start();
+
+		while (frame.isVisible()) Thread.sleep(100);
 	}
 
 	private static String testName() {
