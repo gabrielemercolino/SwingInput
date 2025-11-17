@@ -44,4 +44,35 @@ public final class Input {
 			return previous.getOrDefault(keyCode, false) && !isPressed(keyCode);
 		}
 	}
+
+	public static final class Mouse extends MouseAdapter {
+		private static final Map<Integer, Boolean> previous = new ConcurrentHashMap<>();
+		private static final Map<Integer, Boolean> current = new ConcurrentHashMap<>();
+
+		@Override
+		public void mousePressed(MouseEvent e) {
+			current.put(e.getButton(), true);
+		}
+
+		@Override
+		public void mouseReleased(MouseEvent e) {
+			current.put(e.getButton(), false);
+		}
+
+		private static void sync() {
+			previous.putAll(current);
+		}
+
+		public static boolean isPressed(int mouseKeyCode) {
+			return current.getOrDefault(mouseKeyCode, false);
+		}
+
+		public static boolean wasJustPressed(int mouseKeyCode) {
+			return !previous.getOrDefault(mouseKeyCode, false) && isPressed(mouseKeyCode);
+		}
+
+		public static boolean wasJustReleased(int mouseKeyCode) {
+			return previous.getOrDefault(mouseKeyCode, false) && !isPressed(mouseKeyCode);
+		}
+	}
 }
