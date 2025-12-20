@@ -59,6 +59,8 @@ public final class Input {
 	public static final class Mouse extends MouseAdapter {
 		private static final Map<Integer, Boolean> previous = new ConcurrentHashMap<>();
 		private static final Map<Integer, Boolean> current = new ConcurrentHashMap<>();
+		private static volatile float x, y;
+		private static volatile boolean hasMoved;
 
 		@Override
 		public void mousePressed(MouseEvent e) {
@@ -70,8 +72,18 @@ public final class Input {
 			current.put(e.getButton(), false);
 		}
 
+		@Override
+		public void mouseMoved(MouseEvent e) {
+			hasMoved = true;
+			var position = e.getPoint();
+			var owner = e.getComponent();
+			x = (float) position.x / owner.getWidth();
+			y = (float) position.y / owner.getHeight();
+		}
+
 		private static void sync() {
 			previous.putAll(current);
+			hasMoved = false;
 		}
 
 		public static boolean isPressed(int mouseKeyCode) {
@@ -85,5 +97,15 @@ public final class Input {
 		public static boolean wasJustReleased(int mouseKeyCode) {
 			return previous.getOrDefault(mouseKeyCode, false) && !isPressed(mouseKeyCode);
 		}
+
+		public static boolean hasMoved() {
+			return hasMoved;
+		}
+
+		public static Position getPosition() {
+			return new Position(x, y);
+		}
+
+		public record Position(float x, float y){}
 	}
 }
