@@ -7,22 +7,25 @@ import java.awt.event.MouseEvent;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-@SuppressWarnings("preview")
 public final class Input {
-	private static final StableValue<Keyboard> keyboardListener = StableValue.of();
-	private static final StableValue<Mouse> mouseListener = StableValue.of();
+	private static Keyboard keyboardListener;
+	private static Mouse mouseListener;
 
 	public static Keyboard keyboardListener() {
-		return keyboardListener.orElseSet(Keyboard::new);
+		if (keyboardListener != null) return keyboardListener;
+		keyboardListener = new Keyboard();
+		return keyboardListener;
 	}
 
 	public static Mouse mouseListener() {
-		return mouseListener.orElseSet(Mouse::new);
+		if (mouseListener != null) return mouseListener;
+		mouseListener = new Mouse();
+		return mouseListener;
 	}
 
 	public static void sync() {
-		if (keyboardListener.isSet()) Keyboard.sync();
-		if (mouseListener.isSet()) Mouse.sync();
+		if (keyboardListener != null) Keyboard.sync();
+		if (mouseListener != null) Mouse.sync();
 	}
 
 	public static final class Keyboard extends KeyAdapter {
