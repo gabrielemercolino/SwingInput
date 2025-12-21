@@ -3,10 +3,12 @@
 plugins {
     `java-library`
     `maven-publish`
+
+    id("pl.allegro.tech.build.axion-release") version "1.21.1"
 }
 
 group = "com.github.gabrielemercolino"
-version = "0.0.1"
+version = scmVersion.version
 
 repositories {
     mavenCentral()
@@ -15,14 +17,6 @@ repositories {
 java {
     sourceCompatibility = JavaVersion.VERSION_25
     targetCompatibility = JavaVersion.VERSION_25
-}
-
-tasks.withType<JavaCompile> {
-    options.compilerArgs.addAll(listOf("--enable-preview", "--release", "25"))
-}
-
-tasks.withType<Test> {
-    jvmArgs("--enable-preview")
 }
 
 dependencies {
