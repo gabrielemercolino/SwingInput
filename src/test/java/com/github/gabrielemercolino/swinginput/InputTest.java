@@ -19,7 +19,7 @@ class InputTest {
 		frame.addKeyListener(Input.keyboardListener());
 		frame.setVisible(true);
 
-		Timer timer = new Timer(16, _ -> {
+		Timer timer = new Timer(16, _e -> {
 			if (Keyboard.wasJustPressed(KeyEvent.VK_SPACE)) IO.println("Just pressed space");
 			if (Keyboard.wasJustReleased(KeyEvent.VK_SPACE)) IO.println("Just released space");
 			Input.sync();
@@ -35,7 +35,7 @@ class InputTest {
 		frame.addMouseListener(Input.mouseListener());
 		frame.setVisible(true);
 
-		Timer timer = new Timer(16, _ -> {
+		Timer timer = new Timer(16, _e -> {
 			if (Mouse.wasJustPressed(MouseEvent.BUTTON1)) IO.println("Just pressed left mouse");
 			if (Mouse.wasJustReleased(MouseEvent.BUTTON1)) IO.println("Just released left mouse");
 			Input.sync();
@@ -51,7 +51,7 @@ class InputTest {
 		frame.addMouseMotionListener(Input.mouseListener());
 		frame.setVisible(true);
 
-		Timer timer = new Timer(16, _ -> {
+		Timer timer = new Timer(16, _e -> {
 			if (Mouse.hasMoved()) IO.println(Mouse.getPosition());
 			Input.sync();
 		});
