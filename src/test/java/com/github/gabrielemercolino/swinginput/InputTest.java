@@ -11,6 +11,8 @@ import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
+import static java.lang.System.out;
+
 @SuppressWarnings("BusyWait")
 class InputTest {
 	@Test
@@ -20,8 +22,8 @@ class InputTest {
 		frame.setVisible(true);
 
 		Timer timer = new Timer(16, _e -> {
-			if (Keyboard.wasJustPressed(KeyEvent.VK_SPACE)) IO.println("Just pressed space");
-			if (Keyboard.wasJustReleased(KeyEvent.VK_SPACE)) IO.println("Just released space");
+			if (Keyboard.wasJustPressed(KeyEvent.VK_SPACE)) out.println("Just pressed space");
+			if (Keyboard.wasJustReleased(KeyEvent.VK_SPACE)) out.println("Just released space");
 			Input.sync();
 		});
 		timer.start();
@@ -36,8 +38,8 @@ class InputTest {
 		frame.setVisible(true);
 
 		Timer timer = new Timer(16, _e -> {
-			if (Mouse.wasJustPressed(MouseEvent.BUTTON1)) IO.println("Just pressed left mouse");
-			if (Mouse.wasJustReleased(MouseEvent.BUTTON1)) IO.println("Just released left mouse");
+			if (Mouse.wasJustPressed(MouseEvent.BUTTON1)) out.println("Just pressed left mouse");
+			if (Mouse.wasJustReleased(MouseEvent.BUTTON1)) out.println("Just released left mouse");
 			Input.sync();
 		});
 		timer.start();
@@ -52,7 +54,7 @@ class InputTest {
 		frame.setVisible(true);
 
 		Timer timer = new Timer(16, _e -> {
-			if (Mouse.hasMoved()) IO.println(Mouse.getPosition());
+			if (Mouse.hasMoved()) out.println(Mouse.getPosition());
 			Input.sync();
 		});
 		timer.start();
