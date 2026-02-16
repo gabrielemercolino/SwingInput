@@ -62,6 +62,22 @@ class InputTest {
 		while (frame.isVisible()) Thread.sleep(100);
 	}
 
+	@Test
+	void mouseWheel() throws InterruptedException {
+		JFrame frame = generateTestWindow(testName());
+		frame.addMouseWheelListener(Input.mouseListener());
+		frame.setVisible(true);
+
+		Timer timer = new Timer(16, _e -> {
+			int scroll = Mouse.getScroll();
+			if (scroll != 0) out.println("Scroll: " + scroll);
+			Input.sync();
+		});
+		timer.start();
+
+		while (frame.isVisible()) Thread.sleep(100);
+	}
+
 	private static String testName() {
 		StackTraceElement[] stack = Thread.currentThread().getStackTrace();
 		if (stack.length > 2) return stack[2].getMethodName();

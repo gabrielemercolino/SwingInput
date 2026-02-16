@@ -4,8 +4,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public final class Input {
 	private static Keyboard keyboardListener;
@@ -64,6 +66,9 @@ public final class Input {
 		private static final Map<Integer, Boolean> current = new ConcurrentHashMap<>();
 		private static volatile float x, y;
 		private static volatile boolean hasMoved;
+		// Using AtomicInteger because += operation on volatile int is not atomic
+		// and can cause race conditions between EDT (event dispatch thread) and game loop
+		private static final AtomicInteger scrollAmount = new AtomicInteger(0);
 
 		@Override
 		public void mousePressed(MouseEvent e) {
@@ -84,9 +89,15 @@ public final class Input {
 			y = (float) position.y / owner.getHeight();
 		}
 
+		@Override
+		public void mouseWheelMoved(MouseWheelEvent e) {
+			scrollAmount.addAndGet(e.getUnitsToScroll());
+		}
+
 		private static void sync() {
 			previous.putAll(current);
 			hasMoved = false;
+			scrollAmount.set(0);
 		}
 
 		public static boolean isPressed(int mouseKeyCode) {
@@ -103,6 +114,10 @@ public final class Input {
 
 		public static boolean hasMoved() {
 			return hasMoved;
+		}
+
+		public static int getScroll() {
+			return scrollAmount.get();
 		}
 
 		public static Position getPosition() {
