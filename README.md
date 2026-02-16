@@ -151,21 +151,15 @@ int screenY = (int) (pos.y() * component.getHeight());
 
 1. **Always call `Input.sync()` at the end of your game loop** - This updates the internal state and enables detection of "just pressed" and "just released" events.
 
-2. **Add all listeners** - Make sure to add all four listeners for full functionality:
-   - `addKeyListener(Input.keyboardListener())`
-   - `addMouseListener(Input.mouseListener())`
-   - `addMouseMotionListener(Input.mouseListener())`
-   - `addMouseWheelListener(Input.mouseListener())`
-
-3. **Thread Safety** - The library is thread-safe and can be used from any thread, but input events are processed on the Event Dispatch Thread (EDT).
-
-4. **Normalized Coordinates** - Mouse position is normalized (0.0 to 1.0) for easy scaling to different window sizes.
-
-5. **Optional Listeners** - You only need to add the listeners you actually use:
+2. **Optional Listeners** - You only need to add the listeners you actually use:
    - `addKeyListener()` - only needed for keyboard input
    - `addMouseListener()` - only needed for mouse button clicks
    - `addMouseMotionListener()` - only needed for mouse movement tracking
    - `addMouseWheelListener()` - only needed for scroll wheel input
+
+3. **Thread Safety** - The library is thread-safe and can be used from any thread, but input events are processed on the Event Dispatch Thread (EDT).
+
+4. **Normalized Coordinates** - Mouse position is normalized (0.0 to 1.0) for easy scaling to different window sizes.
 
 ## License
 
